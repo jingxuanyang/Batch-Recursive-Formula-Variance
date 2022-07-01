@@ -10,7 +10,7 @@ Cite this note:
         author={Jingxuan Yang},
         year={2022},
         month={July},
-        url={\url{}},
+        url={\url{https://github.com/jingxuanyang/BRF-variance/blob/main/batch_recursive_formula_var.pdf}},
 }
 ```
 

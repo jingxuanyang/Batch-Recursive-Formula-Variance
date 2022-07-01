@@ -1,0 +1,36 @@
+%
+% Copyright (C) 2022 by Jingxuan Yang <yanglatex2e@gmail.com>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%      http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL1.3c maintenance status `maintained'.
+%
+
+\ProvidesPackage{tnptimes}[2022/06/23 1.0 Making Text, Numbers and Punctuations in Times]
+
+% text in times
+\renewcommand{\rmdefault}{ptm}
+
+% ref: fnfguide.pdf
+% math numbers in times
+\DeclareSymbolFont{tnptimes}{OT1}{ptm}{m}{n}
+\DeclareMathSymbol{0}{\mathalpha}{tnptimes}{48}
+\DeclareMathSymbol{1}{\mathalpha}{tnptimes}{"31}
+\DeclareMathSymbol{2}{\mathalpha}{tnptimes}{"32}
+\DeclareMathSymbol{3}{\mathalpha}{tnptimes}{"33}
+\DeclareMathSymbol{4}{\mathalpha}{tnptimes}{"34}
+\DeclareMathSymbol{5}{\mathalpha}{tnptimes}{"35}
+\DeclareMathSymbol{6}{\mathalpha}{tnptimes}{"36}
+\DeclareMathSymbol{7}{\mathalpha}{tnptimes}{"37}
+\DeclareMathSymbol{8}{\mathalpha}{tnptimes}{"38}
+\DeclareMathSymbol{9}{\mathalpha}{tnptimes}{"39}
+
+% math punctuations in times
+\DeclareMathSymbol{,}{\mathpunct}{tnptimes}{"2C}
+\DeclareMathSymbol{.}{\mathpunct}{tnptimes}{"2E}

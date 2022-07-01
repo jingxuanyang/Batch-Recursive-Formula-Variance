@@ -1,0 +1,213 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb,bm}
+\usepackage{tnptimes}
+
+\title{Batch Recursive Formula for Variance}
+\author{Jingxuan Yang%
+\thanks{Jingxuan Yang is with the Department of Automation, Tsinghua University, Beijing 100084, China (email: yangjx20@mails.tsinghua.edu.cn).}
+}
+
+\begin{document}
+
+\maketitle
+
+In this note, we will give the recursive formulas for sample mean and sample variance, and their generalized forms for batch updates.
+
+Suppose the data samples are $\{x_i\}_{i=1}^n$. The sample mean is
+\begin{equation}
+  \bar{x}_n=\frac{1}{n}\sum_{i=1}^nx_i.
+\end{equation}
+The sample variance is
+\begin{equation}
+  \label{eq:var_def}
+  \sigma_n^2=\frac{1}{n}\sum_{i=1}^n(x_i-\bar{x}_n)^2.
+\end{equation}
+To find the recursive formula for sample variance, we note that for a random variable $X$, the variance is
+\begin{equation}
+  \begin{aligned}
+    \mathrm{Var}(X)
+    &=\mathbb{E}[(X-\mathbb{E}[X])^2]\\
+    &=\mathbb{E}[X^2]-\mathbb{E}^2[X].\\
+  \end{aligned}
+\end{equation}
+Therefore, the sample variance can be expressed in another form as
+\begin{equation}
+  \sigma_n^2=\frac{1}{n}\sum_{i=1}^nx_i^2-\bar{x}_n^2,
+\end{equation}
+which can also be obtained by some straightforward manipulations from (\ref{eq:var_def}) and is more suitable for the following derivations.
+
+\section{Recursive Formula for Variance}
+
+The sample means for $n$ and $n-1$ samples are
+\begin{equation}
+  \bar{x}_n=\frac{1}{n}\sum_{i=1}^nx_i,
+\end{equation}
+and
+\begin{equation}
+  \bar{x}_{n-1}=\frac{1}{n-1}\sum_{i=1}^{n-1}x_i,
+\end{equation}
+respectively. Therefore, we have
+\begin{equation}
+  \label{eq:mean_diff}
+  n\bar{x}_n=(n-1)\bar{x}_{n-1}+x_n,
+\end{equation}
+and hence
+\begin{equation}
+  \label{eq:recursive_mean}
+  \bar{x}_n=\bar{x}_{n-1}+\frac{x_n-\bar{x}_{n-1}}{n},
+\end{equation}
+which is the recursive formula for sample mean.
+
+The sample variances for $n$ and $n-1$ samples are
+\begin{equation}
+  \sigma_n^2
+  =\frac{1}{n}\sum_{i=1}^n(x_i-\bar{x}_n)^2
+  =\frac{1}{n}\sum_{i=1}^nx_i^2-\bar{x}_n^2,
+\end{equation}
+and
+\begin{equation}
+  \sigma_{n-1}^2
+  =\frac{1}{n-1}\sum_{i=1}^{n-1}(x_i-\bar{x}_{n-1})^2
+  =\frac{1}{n-1}\sum_{i=1}^{n-1}x_i^2-\bar{x}_{n-1}^2,
+\end{equation}
+respectively. Therefore, we have
+\begin{equation}
+  \label{eq:var_diff}
+  n\sigma_n^2-(n-1)\sigma_{n-1}^2
+  =x_n^2-n\bar{x}_n^2+(n-1)\bar{x}_{n-1}^2,
+\end{equation}
+and hence
+\begin{equation}
+  \sigma_n^2=\frac{n-1}{n}(\sigma_{n-1}^2+\bar{x}_{n-1}^2)+\frac{x_n^2}{n}-\bar{x}_n^2,
+\end{equation}
+which is already the recursive formula for sample variance. Another form is to replace the $\bar{x}_n$ with its recursive formula (\ref{eq:recursive_mean}). Multiply (\ref{eq:mean_diff}) and (\ref{eq:recursive_mean}) to get
+\begin{equation}
+  \begin{aligned}
+    n\bar{x}_n^2
+    &=[(n-1)\bar{x}_{n-1}+x_n]\left(\bar{x}_{n-1}+\frac{x_n-\bar{x}_{n-1}}{n}\right)\\
+    &=(n-1)\bar{x}_{n-1}^2+\frac{n-1}{n}\bar{x}_{n-1}(x_n-\bar{x}_{n-1})+x_n\bar{x}_{n-1}+\frac{x_n(x_n-\bar{x}_{n-1})}{n}.\\
+  \end{aligned}
+\end{equation}
+Therefore, we have
+\begin{equation}
+  \label{eq:var_diff_recur}
+  (n-1)\bar{x}_{n-1}^2-n\bar{x}_n^2
+  =\frac{n-1}{n}\bar{x}_{n-1}^2-2\frac{n-1}{n}x_n\bar{x}_{n-1}-\frac{1}{n}x_n^2.
+\end{equation}
+Substituting (\ref{eq:var_diff_recur}) into (\ref{eq:var_diff}), we obtain
+\begin{equation}
+  \begin{aligned}
+    n\sigma_n^2-(n-1)\sigma_{n-1}^2
+    &=x_n^2+\frac{n-1}{n}\bar{x}_{n-1}^2-2\frac{n-1}{n}x_n\bar{x}_{n-1}-\frac{1}{n}x_n^2\\
+    &=\frac{n-1}{n}(x_n^2-2x_n\bar{x}_{n-1}+\bar{x}_{n-1}^2)\\
+    &=\frac{n-1}{n}(x_n-\bar{x}_{n-1})^2,
+  \end{aligned}
+\end{equation}
+and
+\begin{equation}
+  \begin{aligned}
+    \sigma_n^2
+    &=\frac{n-1}{n}\sigma_{n-1}^2+\frac{n-1}{n^2}(x_n-\bar{x}_{n-1})^2\\
+    &=\frac{n-1}{n}\left[\sigma_{n-1}^2+\frac{1}{n}(x_n-\bar{x}_{n-1})^2\right],\\
+  \end{aligned}
+\end{equation}
+which is the second form of the recursive formula for sample variance and is more frequently adopted in practice. It expresses the variance of $n$ samples with the variance of $n-1$ samples and the square distance between the sample $x_n$ and sample mean $\bar{x}_{n-1}$.
+
+\section{Batch Recursive Formula for Variance}
+
+Sometimes we want to update the sample mean and sample variance with a batch of $m\geqslant1$ samples $\{x_i\}_{i=n-m+1}^n$. Denote the batch mean and batch variance as
+\begin{equation}
+  \label{eq:batch_mean}
+  \bar{s}_m=\frac{1}{m}\sum_{i=1}^m x_{n-m+i},
+\end{equation}
+and
+\begin{equation}
+  \label{eq:batch_var}
+  s^2_m=\frac{1}{m}\sum_{i=1}^m x_{n-m+i}^2-\bar{s}_m^2,
+\end{equation}
+respectively. 
+
+The sample means for $n$ and $n-m$ samples are
+\begin{equation}
+  \bar{x}_n=\frac{1}{n}\sum_{i=1}^nx_i,
+\end{equation}
+and
+\begin{equation}
+  \bar{x}_{n-m}=\frac{1}{n-m}\sum_{i=1}^{n-m}x_i,
+\end{equation}
+respectively. Therefore, we have
+\begin{equation}
+  \label{eq:mean_diff_batch}
+  \begin{aligned}
+    n\bar{x}_n
+    &=(n-m)\bar{x}_{n-1}+\sum_{i=1}^m x_{n-m+i}\\
+    &=(n-m)\bar{x}_{n-1}+m\bar{s}_m,\\
+  \end{aligned}
+\end{equation}
+where the second equality is obtained from (\ref{eq:batch_mean}), and hence
+\begin{equation}
+  \label{eq:recursive_mean_batch}
+  \bar{x}_n=\bar{x}_{n-m}+\frac{m}{n}(\bar{s}_m-\bar{x}_{n-m}),
+\end{equation}
+which is the batch recursive formula for sample mean.
+
+The sample variances for $n$ and $n-m$ samples are
+\begin{equation}
+  \sigma_n^2
+  =\frac{1}{n}\sum_{i=1}^nx_i^2-\bar{x}_n^2,
+\end{equation}
+and
+\begin{equation}
+  \sigma_{n-m}^2
+  =\frac{1}{n-m}\sum_{i=1}^{n-m}x_i^2-\bar{x}_{n-m}^2,
+\end{equation}
+respectively. Therefore, we have
+\begin{equation}
+  \label{eq:var_diff_batch}
+  \begin{aligned}
+    n\sigma_n^2-(n-m)\sigma_{n-m}^2
+    &=\sum_{i=1}^m x_{n-m+i}^2-n\bar{x}_n^2+(n-m)\bar{x}_{n-m}^2\\
+    &=m(s_m^2+\bar{s}_m^2)-n\bar{x}_n^2+(n-m)\bar{x}_{n-m}^2,\\
+  \end{aligned}
+\end{equation}
+where the second equality is obtained from (\ref{eq:batch_var}), and hence
+\begin{equation}
+  \sigma_n^2=\frac{n-m}{n}(\sigma_{n-m}^2+\bar{x}_{n-m}^2)+\frac{m}{n}(s_m^2+\bar{s}_m^2)-\bar{x}_n^2,
+\end{equation}
+which is already the batch recursive formula for sample variance. Another form is to replace the $\bar{x}_n$ with its batch recursive formula (\ref{eq:recursive_mean_batch}). Multiply (\ref{eq:mean_diff_batch}) and (\ref{eq:recursive_mean_batch}) to get
+\begin{equation}
+  \begin{aligned}
+    n\bar{x}_n^2
+    &=[(n-m)\bar{x}_{n-m}+m\bar{s}_m]\left(\bar{x}_{n-m}+\frac{m}{n}(\bar{s}_m-\bar{x}_{n-m})\right)\\
+    &=(n-m)\bar{x}_{n-m}^2+\frac{m(n-m)}{n}\bar{x}_{n-m}(\bar{s}_m-\bar{x}_{n-m})+m\bar{s}_m\bar{x}_{n-m}\\
+    &\quad+\frac{m^2}{n}\bar{s}_m(\bar{s}_m-\bar{x}_{n-m}).\\
+  \end{aligned}
+\end{equation}
+Therefore, we have
+\begin{equation}
+  \label{eq:var_diff_recur_batch}
+  (n-m)\bar{x}_{n-m}^2-n\bar{x}_n^2
+  =\frac{m(n-m)}{n}\bar{x}_{n-m}^2-2\frac{m(n-m)}{n}\bar{s}_m\bar{x}_{n-m}-\frac{m^2}{n}\bar{s}_m^2.
+\end{equation}
+Substituting (\ref{eq:var_diff_recur_batch}) into (\ref{eq:var_diff_batch}), we obtain
+\begin{equation}
+  \begin{aligned}
+    n\sigma_n^2-(n-m)\sigma_{n-m}^2
+    &=m(s_m^2+\bar{s}_m^2)+\frac{m(n-m)}{n}\bar{x}_{n-m}^2-\frac{m^2}{n}\bar{s}_m^2\\
+    &\quad-2\frac{m(n-m)}{n}\bar{s}_m\bar{x}_{n-m}\\
+    &=ms_m^2+\frac{m(n-m)}{n}(\bar{s}_m^2-2\bar{s}_m\bar{x}_{n-m}+\bar{x}_{n-m}^2)\\
+    &=ms_m^2+\frac{m(n-m)}{n}(\bar{s}_m-\bar{x}_{n-m})^2,
+  \end{aligned}
+\end{equation}
+and
+\begin{equation}
+  \begin{aligned}
+    \sigma_n^2
+    &=\frac{n-m}{n}\sigma_{n-m}^2+\frac{m(n-m)}{n^2}(\bar{s}_m-\bar{x}_{n-m})^2+\frac{m}{n}s_m^2\\
+    &=\frac{n-m}{n}\left[\sigma_{n-m}^2+\frac{m}{n}(\bar{s}_m-\bar{x}_{n-m})^2+\frac{m}{n-m}s_m^2\right],\\
+  \end{aligned}
+\end{equation}
+which is the second form of the batch recursive formula for sample variance and is more frequently adopted in practice. It expresses the variance of $n$ samples with the variance of $n-m$ samples, the square distance between the batch mean $\bar{s}_m$ and sample mean $\bar{x}_{n-m}$ and the batch variance $s_m^2$.
+
+\end{document}
